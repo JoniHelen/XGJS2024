@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sky
-  m_Shader: {fileID: 4800000, guid: 446cb133520ae204ba8e8dcc2df8e443, type: 3}
+  m_Name: Water
+  m_Shader: {fileID: 4800000, guid: 990eebbb86ac4b049bcc2bfcb1c7b3be, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -53,6 +53,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 5fcf3ab90d866354181a31daf3c8f722, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: d999b5b78a6cd3a4eb081dcf9ccc30b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -110,7 +118,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _SunFalloff: 2
     - _SunIntensity: 20
-    - _SunSize: 5
+    - _SunSize: 6
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -118,12 +126,13 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 0.5133945, g: 0.72542924, b: 0.7830189, a: 1}
+    - _GroundColor: {r: 0.4433962, g: 0.4203898, b: 0.4203898, a: 1}
     - _HorizonColor: {r: 0.5137255, g: 0.7254902, b: 0.78431374, a: 1}
     - _SkyColor: {r: 0.42352942, g: 0.7921569, b: 0.90588236, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WaterColor: {r: 0.17101282, g: 0.48924854, b: 0.5754717, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5456894572480282167
+--- !u!114 &4609776692963219078
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
