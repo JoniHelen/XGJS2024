@@ -131,6 +131,7 @@ Material:
     - _SkyColor: {r: 0.42352942, g: 0.7921569, b: 0.90588236, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WaterColor: {r: 0.17101282, g: 0.48924854, b: 0.5754717, a: 1}
+    - _WaterShallowColor: {r: 0.07195621, g: 0.705238, b: 0.7264151, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &4609776692963219078
 MonoBehaviour:

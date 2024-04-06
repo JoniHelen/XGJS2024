@@ -4,6 +4,7 @@ Shader "Custom/Water"
     {
         _NormalMap("Normal Map", 2D) = "bump" {}
         _WaterColor("Water Color", Color) = (1.0, 1.0, 1.0, 1.0)
+        _WaterShallowColor("Water Shallow Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _SkyColor("Sky Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _GroundColor("Ground Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _HorizonColor("Horizon Color", Color) = (1.0, 1.0, 1.0, 1.0)
@@ -28,6 +29,8 @@ Shader "Custom/Water"
             #pragma fragment Fragment;
 
             #include "Environment.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
             
             struct Attributes
             {
@@ -56,6 +59,7 @@ Shader "Custom/Water"
             float4 _GroundColor;
             float4 _HorizonColor;
             float4 _WaterColor;
+            float4 _WaterShallowColor;
             float _SunSize;
             float _SunFalloff;
             float _SunIntensity;
@@ -111,13 +115,26 @@ Shader "Custom/Water"
                 float reflectivity = saturate(0.02037f + (1 - 0.02037f) * pow(1 - dot(normalWS, viewDir), 5.0f));
 
                 float3 refl = reflect(-viewDir, normalWS);
+
+                float2 screenSpaceUV = GetNormalizedScreenSpaceUV(input.positionHCS.xy);
+                float sceneDepth = LinearEyeDepth(SampleSceneDepth(screenSpaceUV), _ZBufferParams);
+                float surfaceDepth = LinearEyeDepth(input.positionWS, GetWorldToViewMatrix());
+
+                float waterDepth = saturate(sceneDepth - surfaceDepth);
+
+                float4 waterCol = lerp(float4(SampleSceneColor(screenSpaceUV), 1.0f), _WaterShallowColor, waterDepth);
+
+                if (sceneDepth - surfaceDepth > 5.0f)
+                {
+                    waterCol = _WaterColor;
+                }
                 
                 if (dot(refl, float3(0.0f, 1.0f, 0.0f)) < 0.0f)
                 {
-                    return _WaterColor;
+                    return waterCol;
                 }
                 
-                return lerp(_WaterColor, SampleEnvironment(refl, sky), reflectivity);
+                return lerp(waterCol, SampleEnvironment(refl, sky), reflectivity);
             }
             
             ENDHLSL
