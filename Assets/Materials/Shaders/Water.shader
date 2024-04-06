@@ -28,6 +28,9 @@ Shader "Custom/Water"
             #pragma vertex Vertex;
             #pragma fragment Fragment;
 
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+
             #include "Environment.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
@@ -93,6 +96,11 @@ Shader "Custom/Water"
                 );
             }
 
+            half ShadowAtten(float3 worldPosition)
+            {
+                    return MainLightRealtimeShadow(TransformWorldToShadowCoord(worldPosition));
+            }
+
             float4 Fragment(Varyings input) : SV_TARGET
             {
                 float3 normalTSLow = SampleNormal(input.positionWS.xz * 0.01f + _Time.x * 0.1f);
@@ -134,7 +142,7 @@ Shader "Custom/Water"
                     return waterCol;
                 }
                 
-                return lerp(waterCol, SampleEnvironment(refl, sky), reflectivity);
+                return lerp(waterCol, SampleEnvironment(refl, sky) * ShadowAtten(input.positionWS), reflectivity);
             }
             
             ENDHLSL
