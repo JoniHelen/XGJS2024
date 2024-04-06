@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Random = UnityEngine.Random;
 
 public class CollectableItem : MonoBehaviour
 {
@@ -40,24 +41,29 @@ public class CollectableItem : MonoBehaviour
     public CollectableItem Follower;
     public CollectableItem Leader;
     public float DistanceDelta = 0.5f;
+    public float FloatingAmount = 0.1f;
     public ItemInfo Info;
     public bool Collected = false;
+
+    private float sineSeed = 0;
     
     public static implicit operator ItemInfo(CollectableItem c) => c.Info;
 
     private void Awake()
     {
         FollowTarget = transform;
+        sineSeed = Random.Range(0.0f, 15299.0f);
     }
 
     private void Update()
     {
         Vector3 delta = FollowTarget.position - transform.position;
-
-        if (delta.magnitude <= DistanceDelta + Time.deltaTime * 8.0f) return;
-        
+        delta -= delta.normalized * DistanceDelta;
         delta.y = 0; // just to be safe
         
-        transform.Translate(Time.deltaTime * 5.0f * delta, Space.World);
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + delta,
+            Time.deltaTime * delta.magnitude * 8.0f);
+
+        transform.position = new Vector3(transform.position.x, Mathf.Sin(Time.time * 2.0f + sineSeed) * FloatingAmount, transform.position.z);
     }
 }

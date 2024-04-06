@@ -5,37 +5,55 @@ using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
 {
     [SerializeField] private float acceleration;
-    [SerializeField] private float velocityDecay;
     [SerializeField] private float speed;
     [SerializeField] private float turnSpeed;
     [SerializeField] private Vector2 maxDistance;
+    [SerializeField] private GameObject pauseMenu;
     private Vector2 input;
     private Vector3 velocity;
-
-    private void Awake()
-    {
-        ToggleInput(false);
-    }
-
-    public void ToggleInput(bool value)
-    {
-        if (value)
-            GetComponent<PlayerInput>().ActivateInput();
-        else
-            GetComponent<PlayerInput>().DeactivateInput();
-    }
+    private bool paused = true;
 
     public void QuitGame()
     {
         Application.Quit();
     }
 
+    public void OnPause()
+    {
+        Time.timeScale = paused ? 1.0f : 0.0f;
+        
+        paused = !paused;
+        pauseMenu.SetActive(paused);
+    }
+    
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.started) return;
+        
+        Time.timeScale = paused ? 1.0f : 0.0f;
+        
+        paused = !paused;
+        pauseMenu.SetActive(paused);
+    }
+
     private void Update()
     {
-        if (velocity.magnitude < speed)
+        transform.position = new Vector3(transform.position.x, Mathf.Sin(Time.time * 2.0f) * 0.1f, transform.position.z);
+        
+        if (paused) return;
+        
+        if (input.y != 0)
+        {
             velocity += acceleration * Time.deltaTime * new Vector3(0, 0, input.y);
-
-        velocity *= velocityDecay;
+            velocity = Vector3.ClampMagnitude(velocity, speed);
+        }
+        else if (velocity.magnitude > 0)
+        {
+            float sgn = Mathf.Sign(velocity.z);
+            velocity -= acceleration * Time.deltaTime * new Vector3(0.0f, 0.0f, sgn);
+            if (sgn != Mathf.Sign(velocity.z))
+                velocity = Vector3.zero;
+        }
         
         transform.Translate(Time.deltaTime * velocity, Space.Self);
         transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime * input.x, Space.World);
