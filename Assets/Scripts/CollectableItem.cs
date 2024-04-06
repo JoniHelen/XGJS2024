@@ -58,6 +58,6 @@ public class CollectableItem : MonoBehaviour
         
         delta.y = 0; // just to be safe
         
-        transform.Translate(Time.deltaTime * 8.0f * delta.normalized, Space.Self);
+        transform.Translate(Time.deltaTime * 5.0f * delta, Space.World);
     }
 }

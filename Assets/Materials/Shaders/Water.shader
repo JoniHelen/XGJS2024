@@ -130,6 +130,14 @@ Shader "Custom/Water"
 
                 float waterDepth = saturate(sceneDepth - surfaceDepth);
 
+                sceneDepth = LinearEyeDepth(SampleSceneDepth(screenSpaceUV + (_ScreenParams.zw - 1.0f) * 50.0f * waterDepth * normalWS.xz), _ZBufferParams);
+                waterDepth = saturate(sceneDepth - surfaceDepth);
+
+                screenSpaceUV += (_ScreenParams.zw - 1.0f) * 50.0f * waterDepth * normalWS.xz;
+
+                sceneDepth = LinearEyeDepth(SampleSceneDepth(screenSpaceUV), _ZBufferParams);
+                waterDepth = saturate(sceneDepth - surfaceDepth);
+
                 float4 waterCol = lerp(float4(SampleSceneColor(screenSpaceUV), 1.0f), _WaterShallowColor, waterDepth);
 
                 if (sceneDepth - surfaceDepth > 5.0f)
