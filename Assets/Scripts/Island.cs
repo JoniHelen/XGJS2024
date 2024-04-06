@@ -5,47 +5,34 @@ using TMPro;
 
 public class Island : MonoBehaviour
 {
-    [System.Serializable]
-    public struct ItemInfo
+    /*public enum IslandType
     {
-        public CollectableItem.ItemType Type;
-        public int Count;
-        
-        public string Name => Type switch
-        {
-            CollectableItem.ItemType.Board => "Board",
-            CollectableItem.ItemType.SlidePiece => "Slide Piece",
-            CollectableItem.ItemType.Parasol => "Parasol",
-            CollectableItem.ItemType.Thatch => "Thatch",
-            CollectableItem.ItemType.Nails => "Nails",
-            CollectableItem.ItemType.Hammer => "Hammer",
-            CollectableItem.ItemType.Saw => "Saw",
-            CollectableItem.ItemType.Brimstone => "Brimstone",
-            CollectableItem.ItemType.Sand => "Sand",
-            CollectableItem.ItemType.TreasureChest => "Treasure Chest",
-            CollectableItem.ItemType.Coins => "Coins",
-            CollectableItem.ItemType.Jewels => "Jewels",
-            _ => ""
-        };
+        Leisure, Hut, Volcanic, Treasure
     }
+
+    public IslandType Type;*/
+    [SerializeField] private ItemDisplayPanel DisplayPanelPrefab;
+    [SerializeField] private Transform PanelParent;
+    public List<CollectableItem.ItemInfo> RequiredItems;
+    public List<ItemDisplayPanel> DisplayPanels;
     
-    public List<ItemInfo> RequiredItems;
-
-    [SerializeField] private TMP_Text text;
-
-
     private void Awake()
     {
-        text.text = "Items required:";
-
-        foreach (var item in RequiredItems)
+        for (var i = 0; i < RequiredItems.Count; i++)
         {
-            text.text += $" {item.Count}x {item.Name}";
+            RequiredItems[i].Count.Value = Random.Range(1, 6);
+            DisplayPanels.Add(Instantiate(DisplayPanelPrefab, PanelParent));
+            DisplayPanels[i].UpdateDisplay(RequiredItems[i]);
         }
     }
 
     public bool CanBuildIsland(List<CollectableItem> items)
     {
-        return RequiredItems.All(item => items.Exists(i => i.Type == item.Type && i.Count == item.Count));
+        return RequiredItems.All(item => items.Exists(i => i.Info.Type == item.Type && i.Info.Count.Value >= item.Count.Value));
+    }
+
+    public void Build()
+    {
+        GetComponent<Renderer>().material.color = Color.green;
     }
 }
