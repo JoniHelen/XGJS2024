@@ -14,7 +14,7 @@ public class ItemSpawner : MonoBehaviour
         for (int i = 0; i < ItemAmount; i++)
         {
             float randomAngle = Random.Range(0.0f, Mathf.PI * 2);
-            float randomLength = Mathf.Sqrt(Random.Range(0.0f, SpawnRange));
+            float randomLength = Random.Range(5.0f, SpawnRange);
             Vector2 randomDir = new(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
             randomDir *= randomLength;
 

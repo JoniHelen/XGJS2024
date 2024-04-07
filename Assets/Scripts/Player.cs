@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Transform PanelParent;
     [SerializeField] private ItemDisplayPanel inventoryPanelPrefab;
+    [SerializeField] private AudioSource collectSound;
     private List<ItemDisplayPanel> inventoryDisplays = new();
     private List<CollectableItem> collectedItems = new();
     
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
                 inventoryDisplays.Add(display);
             }
             
+            collectSound.PlayOneShot(collectSound.clip);
             Debug.Log($"Collected {item.Info.Name}!");
         }
         else if (other.TryGetComponent(out Island island))
