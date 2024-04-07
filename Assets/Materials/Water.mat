@@ -117,7 +117,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _SunFalloff: 2
-    - _SunIntensity: 20
+    - _SunIntensity: 60
     - _SunSize: 6
     - _Surface: 0
     - _WorkflowMode: 1

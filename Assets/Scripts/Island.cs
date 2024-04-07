@@ -56,12 +56,12 @@ public class Island : MonoBehaviour
 
         while (t < 1)
         {
-            IslandModel.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one * 0.08f, easeOutElastic(t));
+            IslandModel.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, new Vector3(0.04f, 0.03f, 0.04f), easeOutElastic(t));
             t += Time.deltaTime;
             yield return null;
         }
 
-        IslandModel.transform.localScale = Vector3.one * 0.08f;
+        IslandModel.transform.localScale = new Vector3(0.04f, 0.03f, 0.04f);
     }
 
     public void Build()
