@@ -148,6 +148,6 @@ MonoBehaviour:
   Info:
     Type: 8
     Count:
-      value: 5
-    Icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+      value: 1
+    Icon: {fileID: 21300000, guid: ed6ea4ec4c07576488e87dc656bbe3a1, type: 3}
   Collected: 0

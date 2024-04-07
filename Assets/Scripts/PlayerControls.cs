@@ -9,6 +9,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float turnSpeed;
     [SerializeField] private Vector2 maxDistance;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private AudioSource engineSound;
     private Vector2 input;
     private Vector3 velocity;
     private bool paused = true;
@@ -54,6 +55,8 @@ public class PlayerControls : MonoBehaviour
             if (sgn != Mathf.Sign(velocity.z))
                 velocity = Vector3.zero;
         }
+
+        engineSound.pitch = 0.5f + (1.5f - 0.5f) * (velocity.magnitude / 7.0f);
         
         transform.Translate(Time.deltaTime * velocity, Space.Self);
         transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime * input.x, Space.World);
