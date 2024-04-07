@@ -21,7 +21,7 @@ public class Island : MonoBehaviour
     {
         for (var i = 0; i < RequiredItems.Count; i++)
         {
-            RequiredItems[i].Count.Value = Random.Range(1, 6);
+            RequiredItems[i].Count.Value = Random.Range(5, 8);
             DisplayPanels.Add(Instantiate(DisplayPanelPrefab, PanelParent));
             DisplayPanels[i].UpdateDisplay(RequiredItems[i]);
         }
